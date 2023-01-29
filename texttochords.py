@@ -17,14 +17,9 @@ def encode(stringinput):
 def cleanup(ear):
     clean=[]
     last='no match'
-    andbefore='no match'
     for heard in ear:
-        if not(heard=='no match'):
-            if not(heard==last):
-                clean.append(heard)
-            elif heard==andbefore:
-                clean.append(heard)
-        andbefore=last
+        if not(heard=='no match' or heard==last):
+            clean.append(heard)
         last=heard
     return clean
 

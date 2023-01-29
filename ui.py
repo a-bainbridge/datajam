@@ -15,7 +15,16 @@ def playevent():
     playchords.play_chords(texttochords.encode(outbox.toPlainText()))
 
 def recordevent():
-    inbox.setText(record.listen())
+    #ddlistened=record.listen()
+    #clean=texttochords.cleanup(listened)
+    #print(listened)
+    #print(clean)
+    listened=record.listen()
+    print(listened)
+    clean=texttochords.cleanup(listened)
+    print(clean)
+    #inbox.setText(texttochords.decode(texttochords.cleanup(record.listen())))
+    inbox.setText(texttochords.decode(clean))
     #inbox.setText(texttochords.decode(record.listolistonotes2indices(texttochords.encode(outbox.toPlainText()))))
 
 def update_plot():
