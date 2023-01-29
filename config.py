@@ -1,5 +1,5 @@
 SCALE = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"]
-CHORDS = [["C4", "E4", "G4"],["C4", "G4", "B4"],["B4","D4","F4"], ["A4", "F4", "C5"]]
+CHORDS = [["C4", "E4", "G4"],["C4", "G4", "B4"],["D4","F4","B4"], ["F4", "A4", "C5"]]
 FREQUENCIES = {
   "C4": 261.63,
   "D4": 293.66,
@@ -11,4 +11,4 @@ FREQUENCIES = {
   "C5": 523.25
 }
 SAMPLE_RATE = 44100
-NOTE_DURATION = 0.2
+NOTE_DURATION = 0.55

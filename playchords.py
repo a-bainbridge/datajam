@@ -12,9 +12,9 @@ samples = round(samples)
 t = np.linspace(0, config.NOTE_DURATION, samples, False)
 
 windowing = np.ones(samples)
-windowing_start = 0.5
+windowing_start = 0.20
 
-windowing[ceil(samples*windowing_start):] = np.linspace(1,0,floor(samples*(1-windowing_start)), False)
+windowing[round(samples*windowing_start):] = np.logspace(0,-20,round(samples*(1-windowing_start)), False, 2)
 
 notes_data = {}
 for name, frequency in config.FREQUENCIES.items():
@@ -35,9 +35,10 @@ def play_chords(track: list[list[str]]):
   # start playback
   play_obj = sa.play_buffer(audio, 1, 2, config.SAMPLE_RATE)
   # wait for playback to finish before exiting
-  play_obj.wait_done()
+  # play_obj.wait_done()
 
 if __name__ == "__main__":
-  aha = random.choices(range(len(config.CHORDS)), k=100)
+  aha = random.choices(range(len(config.CHORDS)), k=10)
+  #aha = [2] 
   track = [config.CHORDS[i] for i in aha]
   play_chords(track)
