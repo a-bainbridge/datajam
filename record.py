@@ -34,14 +34,14 @@ def listen():
     rec = PvRecorder(device_index=-1,frame_length=n)
     notes=[]
     silencetime=101
-    s=20
+    s=7
 
     rec.start()
     recording=True
     while silencetime<s or silencetime>100:
         frame=rec.read()
         yf=fft(frame)
-        xf=fftfreq(n,1./float(config.SAMPLE_RATE))*.363
+        xf=fftfreq(n,1./float(16000))
         freqs = xf[otherfreqcheck(np.abs(yf)[:int(n/2)])]
         try:
             notes.append(config.CHORDS.index(freqtonotes(freqs)))
