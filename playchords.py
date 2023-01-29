@@ -12,7 +12,7 @@ samples = round(samples)
 t = np.linspace(0, config.NOTE_DURATION, samples, False)
 
 windowing = np.ones(samples)
-windowing_start = 0.5
+windowing_start = 0.95
 
 windowing[ceil(samples*windowing_start):] = np.linspace(1,0,floor(samples*(1-windowing_start)), False)
 
@@ -38,6 +38,7 @@ def play_chords(track: list[list[str]]):
   play_obj.wait_done()
 
 if __name__ == "__main__":
-  aha = random.choices(range(len(config.CHORDS)), k=100)
+  aha = random.choices(range(len(config.CHORDS)), k=10)
+  #aha = [2] 
   track = [config.CHORDS[i] for i in aha]
   play_chords(track)

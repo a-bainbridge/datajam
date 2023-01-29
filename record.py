@@ -1,79 +1,8 @@
 from pvrecorder import PvRecorder
 from scipy.fft import fft, fftfreq
-from scipy.signal import find_peaks
+#from scipy.signal import find_peaks
 import numpy as np
 import config
-
-def checkfreq(x):
-    #returns top 3 indices of x
-
-    a=0
-    b=0
-    c=0
-    ai=0
-    bi=0
-    ci=0
-    d=0
-    e=0
-    f=0
-    di=0
-    ei=0
-    fi=0
-    i=5
-
-    while i<len(x):
-        if xf[i]>250 and xf[i]<550:
-            if x[i]>a:
-                fi=ei
-                f=e
-                ei=di
-                e=d
-                di=ci
-                d=c
-                ci=bi
-                c=b
-                bi=ai
-                b=a
-                ai=i
-                a=x[i]
-            elif x[i]>b:
-                fi=ei
-                f=e
-                ei=di
-                e=d
-                di=ci
-                d=c
-                ci=bi
-                c=b
-                bi=i
-                b=x[i]
-            elif x[i]>c:
-                fi=ei
-                f=e
-                ei=di
-                e=d
-                di=ci
-                d=c
-                ci=i
-                c=x[i]
-            elif x[i]>d:
-                fi=ei
-                f=e
-                ei=di
-                e=d
-                di=i
-                d=x[i]
-            elif x[i]>e:
-                fi=ei
-                f=e
-                ei=i
-                e=x[i]
-            elif x[i]>f:
-                fi=i
-                f=x[i]
-        i+=1
-
-    return [ai,bi,ci,di,ei,fi]
 
 def otherfreqcheck(x):
     peak=[]
@@ -92,33 +21,28 @@ def freqtonotes(f):
                 dnote.append(note)
     return dnote
 
-rec = PvRecorder(device_index=-1,frame_length=512)
-audio=[]
+n=4096
+rec = PvRecorder(device_index=-1,frame_length=n)
+notes=[]
+silencetime=101
+s=20
 
 rec.start()
-recording=0
-while recording<60:
+recording=True
+while silencetime<s or silencetime>100:
     frame=rec.read()
-    audio.extend(frame)
-    #if audio[-1]==1: #to be replaced with the stop chord
-    recording+=1
+    yf=fft(frame)
+    xf=fftfreq(n,1./float(config.SAMPLE_RATE))*.363
+    freqs = xf[otherfreqcheck(np.abs(yf)[:int(n/2)])]
+    try:
+        notes.append(config.CHORDS.index(freqtonotes(freqs)))
+        print(config.CHORDS.index(freqtonotes(freqs)))
+        silencetime=0
+    except:
+        notes.append("no match")
+        print("no match")
+        silencetime+=1
 rec.stop()
 rec.delete()
 
-audio=audio[-4096:]
-n=len(audio)
-yf = fft(audio)
-xf = fftfreq(n,1./float(config.SAMPLE_RATE))*.363
-#peakindices, garbage = find_peaks(yf[:int(n/2)],height=600000)
-freqs = xf[checkfreq(np.abs(yf)[:int(n/2)])]
-print(freqs)
-notes = freqtonotes(freqs)
-
-try:
-    print(config.CHORDS.index(notes))
-except:
-    print("no chord :(")
-from matplotlib import pyplot
-pyplot.plot(xf[:int(n/2)],np.abs(yf)[:int(n/2)]) #magic 2
-pyplot.xlim([0,2000])
-pyplot.show()
+print(notes[:-s])
