@@ -1,13 +1,14 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QTextEdit, QVBoxLayout, QHBoxLayout
 import texttochords
 import record
+import playchords
 
 def playevent():
-    print(texttochords.encode(outbox.toPlainText()))
+    playchords.play_chords(texttochords.encode(outbox.toPlainText()))
 
 def recordevent():
-    #inbox.setText(record.listen())
-    inbox.setText(texttochords.decode(record.listolistonotes2indices(texttochords.encode(outbox.toPlainText()))))
+    inbox.setText(record.listen())
+    #inbox.setText(texttochords.decode(record.listolistonotes2indices(texttochords.encode(outbox.toPlainText()))))
 
 app = QApplication([])
 window = QWidget()
