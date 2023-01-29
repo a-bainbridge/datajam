@@ -3,7 +3,7 @@ import numpy as np
 import simpleaudio as sa
 import random
 scale = ["SP", "C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"]
-
+CHORDS = [["C4", "E4", "G4"],["C4", "G4", "B4"],["B4","D4","F4"], ["A4", "F4", "C5"]]
 frequencies = {
   "SP": 0.00,
   "C4": 261.63,
@@ -33,30 +33,24 @@ NOTES = {}
 for name, frequency in frequencies.items():
   NOTES[name] = np.sin(float(frequency) * t * 2 * np.pi) * windowing
 
-print(NOTES)
-
-chords = [["C4", "E4", "G4"],["C4", "G4", "B4"],["B4","D4","F4"], ["A4", "F4", "C5"]]
-
-
-if __name__ == "__main__":
-  aha = random.choices(range(len(chords)), k=100)
-  track = [chords[i] for i in aha]
+def play_chords(track: list[list[str]]):
   audio = np.zeros(round(44100 * len(track) * T))
   offset = 0
   for note_list in track:
-    print(note_list)
     for note in note_list:
-      print(note)
       audio[0 + offset: samples + offset] += NOTES[note]
     max_amplitude = np.max(np.abs(audio[0 + offset: samples + offset]))
     if max_amplitude > 0.00001:
       audio[0 + offset: samples + offset] *= 32767 / max_amplitude
     offset += samples
-    print(offset)
-  print(audio)
   # convert to 16-bit data
   audio = audio.astype(np.int16)
   # start playback
   play_obj = sa.play_buffer(audio, 1, 2, sample_rate)
   # wait for playback to finish before exiting
   play_obj.wait_done()
+
+if __name__ == "__main__":
+  aha = random.choices(range(len(CHORDS)), k=100)
+  track = [CHORDS[i] for i in aha]
+  play_chords(track)
