@@ -11,7 +11,7 @@ def encode(stringinput):
     for c in list(stringinput):
         binlist+=(format(ord(c),'07b'))
     for i in range(0,len(binlist),2):
-        CHORDS_LIST.append(config.CHORDS[int(binlist[i:i+2],2)])
+        CHORDS_LIST.append(config.CHORDS[int(binlist[i:i+2].ljust(2,'0'),2)])
     return CHORDS_LIST
 
 def cleanup(ear):
