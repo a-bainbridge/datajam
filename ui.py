@@ -1,10 +1,13 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QTextEdit, QVBoxLayout, QHBoxLayout
+import texttochords
+import record
 
-def ondaclick():
-    print(outbox.toPlainText())
+def playevent():
+    print(texttochords.encode(outbox.toPlainText()))
 
 def recordevent():
-    inbox.setText('the decoded message')
+    #inbox.setText(record.listen())
+    inbox.setText(texttochords.decode(record.listolistonotes2indices(texttochords.encode(outbox.toPlainText()))))
 
 app = QApplication([])
 window = QWidget()
@@ -16,7 +19,7 @@ layout1.addWidget(outbox)
 inbox = QTextEdit('Recorded message')
 layout2.addWidget(inbox)
 playbutton = QPushButton('Play')
-playbutton.clicked.connect(ondaclick)
+playbutton.clicked.connect(playevent)
 layout1.addWidget(playbutton)
 recordbutton = QPushButton('Record')
 recordbutton.clicked.connect(recordevent)
