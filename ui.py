@@ -1,0 +1,16 @@
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QTextEdit, QVBoxLayout, QHBoxLayout
+
+app = QApplication([])
+window = QWidget()
+layout = QHBoxLayout()
+layout1 = QVBoxLayout()
+layout2 = QVBoxLayout()
+layout1.addWidget(QTextEdit('Message to send'))
+layout2.addWidget(QTextEdit('Recorded message'))
+layout1.addWidget(QPushButton('Play'))
+layout2.addWidget(QPushButton('Record'))
+layout.addLayout(layout1)
+layout.addLayout(layout2)
+window.setLayout(layout)
+window.show()
+app.exec()
